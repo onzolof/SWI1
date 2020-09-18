@@ -23,8 +23,6 @@
     - waere gut fuer ux und kapselung der pages
 - bootstrap lokal
     - da anderes theme verwendet
-- vanilla lokal
-    - fuer schnelleres und einfacheres zugreifen auf dom-elemente
 - popper.js & jquery via URL eingebunden
     - brauchts fuer bootstrap
 -> funktioniert also nicht korrekt ohne internet
