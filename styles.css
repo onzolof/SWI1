@@ -1,0 +1,15 @@
+body {
+    padding: 12px;
+}
+
+#card-panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.card {
+    flex-basis: auto;
+    flex-shrink: 2;
+    flex-grow: 3;
+}
