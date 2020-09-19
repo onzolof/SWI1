@@ -1,15 +1,69 @@
 class ComponentFactory {
 
-    createCardPanel(rooms) {
+    static createTitle(text) {
+        const title = document.createElement('h1');
+        title.id = 'title';
+        title.innerHTML = text;
+        return title;
+    }
+
+    static createSubtitle(text) {
+        const subtitle = document.createElement('h4');
+        subtitle.id = 'subtitle';
+        subtitle.innerHTML = text;
+        return subtitle;
+    }
+
+    static createCardPanel(rooms, storeClickListener) {
         const cardPanel = document.createElement('div');
         cardPanel.id = 'card-panel';
-        rooms.map(this.createCard)
-            .forEach(element => cardPanel.appendChild(element));
+        rooms.sort(room => !room.available)
+            .map(room => {
+                const elementId = 'card-' + room.id;
+                storeClickListener(elementId, room);
+                return new CardBuilder()
+                    .withId(elementId)
+                    .withTitle(room.name)
+                    .withSubtitle(room.id)
+                    .isAvailable(room.available)
+                    .build();
+            }).forEach(element => cardPanel.appendChild(element));
         return cardPanel;
     }
 
-    createCard(room) {
-        return new CardBuilder().withTitle(room.name).withSubtitle(room.id).build();
+    static createRoomPanel(room, storeClickListener) {
+        const roomPanel = document.createElement('div');
+        roomPanel.id = 'room-panel';
+        const bookButtonId = "booking-button";
+        storeClickListener(bookButtonId);
+        const button = ComponentFactory.createPrimaryButtonElement(bookButtonId, RESERVIEREN);
+        roomPanel.appendChild(button);
+        return roomPanel;
+    }
+
+    static createBookingPanel(room) {
+        const bookingPanel = document.createElement('div');
+        bookingPanel.id = 'booking-panel';
+        const dummyElement = document.createElement('p');
+        dummyElement.innerHTML = 'book room with id ' + room.id;
+        bookingPanel.appendChild(dummyElement);
+        return bookingPanel;
+    }
+
+    static createPrimaryButtonElement(id, caption) {
+        const button = document.createElement('button');
+        button.type = "button";
+        button.className = "btn btn-primary";
+        button.id = id;
+        button.innerHTML = caption;
+        return button;
+    }
+
+    static createSuccessBadge(caption) {
+        const badge = document.createElement('span');
+        badge.className = "badge badge-success";
+        badge.innerHTML = caption;
+        return badge;
     }
 
 }

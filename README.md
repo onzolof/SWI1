@@ -7,6 +7,8 @@
     - schoener stil meiner meinung nach -> keine seiteneffekte
     - keine hoisting-probleme: https://medium.com/javascript-in-plain-english/how-to-use-let-var-and-const-in-javascript-cdf42b48d70
 - bewusst wenig kommentare
+- kleine methoden
+- code muss lesbar sein, deshalb oft das builder pattern
 
 ## konzept
 - mockups
@@ -15,12 +17,16 @@
 - uml diagramm
 
 ## entwicklung
+- problem mit dem lokalen file
+    - problem beim routing
+        - schlechtere user experience
+        - schlechetere kapselung
+        - back-button im browser funktioniert nicht
+    - problem listener
+        - dom-tree muss stehen wenn listener gesetzt werden
+    - module koennen nicht benutzt werden, wegen CORS, deshalb klassen verwendet
 - karten sind nicht so langweilig
     - grid-layout waere noch besser, aber wird von safari nicht unterstuetzt
-- kann keine module benutzen, da lokal und ohne webserver CORS-problem
-    - deshalb wurden klassen erstellt (fuer die lesbarkeit)
-- routing klappt nicht wegen lokalem oeffnen / webserver fehlt
-    - waere gut fuer ux und kapselung der pages
 - bootstrap lokal
     - da anderes theme verwendet
 - popper.js & jquery via URL eingebunden
@@ -28,5 +34,5 @@
 -> funktioniert also nicht korrekt ohne internet
 
 - was koennte man noch einbauen?
-    - breadcrumb
+    - quick-book-button auf raeumen die verfuegbar sind
     - room-filter

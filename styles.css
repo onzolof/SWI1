@@ -3,13 +3,20 @@ body {
 }
 
 #card-panel {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 8px;
 }
 
 .card {
-    flex-basis: auto;
-    flex-shrink: 2;
-    flex-grow: 3;
+    cursor: pointer;
+}
+
+.card:hover {
+    background-color:#f1f1f4;
+    transition: 0.4s;
+}
+
+.badge-available {
+    margin-left: 8px;
 }
