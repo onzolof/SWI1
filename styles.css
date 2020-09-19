@@ -14,9 +14,17 @@ body {
 
 .card:hover {
     background-color:#f1f1f4;
-    transition: 0.4s;
+    transition: 0.2s;
+    animation: shake 0.1s;
 }
 
 .badge-available {
     margin-left: 8px;
 }
+
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    33% { transform: rotate(1deg); }
+    66% { transform: rotate(0deg); }
+    100% { transform:  rotate(-1deg); }
+  }
