@@ -8,7 +8,7 @@
     - keine hoisting-probleme: https://medium.com/javascript-in-plain-english/how-to-use-let-var-and-const-in-javascript-cdf42b48d70
 - bewusst wenig kommentare
 - kleine methoden
-- code muss lesbar sein, deshalb oft das builder pattern
+- code muss lesbar sein, deshalb oft das builder pattern verwendet
 
 ## konzept
 - mockups
@@ -36,3 +36,13 @@
 - was koennte man noch einbauen?
     - quick-book-button auf raeumen die verfuegbar sind
     - room-filter
+
+## staerken meiner loesung
+
+## schwachen meiner loesung
+- man kann nirgends den kalender mit allen räumen einsehen, immer nur mit einem raum
+- page-titel vs. breadcrum -> breadcrumb im zentrum oder redundanter titel?
+
+## Reflexion
+- gute planung wichtig, deshalb genaue mockups
+- javascript war ein bisschen ein pain, habe mich aber gut eingelebt

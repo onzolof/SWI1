@@ -15,7 +15,7 @@ class PageHandler {
         const overviewPageLinkId = 'go-to-overview';
         const breadcrumb = new BreadCrumbBuilder()
             .withNonActiveItem(overviewPageLinkId, UEBERSICHT)
-            .withActiveItem(room.name)
+            .withActiveItem(RAUMINFORMATIONEN)
             .build();
         listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.navigateToOverview);
         const storeListener = id => listenerStorage.storeClickListener(id, () => PageHandler.navigateToBooking(room));
@@ -29,7 +29,7 @@ class PageHandler {
         const roomPageLinkId = 'go-to-room';
         const breadcrumb = new BreadCrumbBuilder()
             .withNonActiveItem(overviewPageLinkId, UEBERSICHT)
-            .withNonActiveItem(roomPageLinkId, room.name)
+            .withNonActiveItem(roomPageLinkId, RAUMINFORMATIONEN)
             .withActiveItem(RESERVIEREN)
             .build();
         listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.navigateToOverview);

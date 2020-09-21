@@ -24,7 +24,12 @@ body {
 
 @keyframes shake {
     0% { transform: rotate(0deg); }
-    33% { transform: rotate(1deg); }
-    66% { transform: rotate(0deg); }
-    100% { transform:  rotate(-1deg); }
+    12.5% { transform: rotate(0.4deg); }
+    25% { transform: rotate(0.8deg); }
+    37.5% { transform: rotate(0.4deg); }
+    50% { transform: rotate(0deg); }
+    62.5% { transform: rotate(-0.4deg); }
+    75% { transform:  rotate(-0.8deg); }
+    87.5% { transform:  rotate(-0.4deg); }
+    100% { transform:  rotate(0deg); }
   }
