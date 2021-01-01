@@ -113,6 +113,7 @@ class BreadCrumbBuilder {
         orderedList.appendChild(this.activeItemSupplier());
 
         this._headerButtons.forEach(button => {
+            button.classList.add('ml-2');
             ariaLabel.appendChild(button);
         });
 

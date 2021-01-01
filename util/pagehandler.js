@@ -18,7 +18,7 @@ class PageHandler {
 
         const bookButtonId = "booking-button";
         listenerStorage.storeClickListener(bookButtonId, () => PageHandler.showBooking(room));
-        const bookButton = ComponentFactory.createPrimaryButtonElement(bookButtonId, RESERVIEREN);
+        const bookButton = ComponentFactory.createOutlinePrimaryButton(bookButtonId, RESERVIEREN);
 
         const breadcrumb = new BreadCrumbBuilder()
             .withNonActiveItem(overviewPageLinkId, UEBERSICHT)

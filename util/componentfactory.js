@@ -68,10 +68,10 @@ class ComponentFactory {
         return bookingPanel;
     }
 
-    static createPrimaryButtonElement(id, caption) {
+    static createOutlinePrimaryButton(id, caption) {
         const button = document.createElement('button');
         button.type = "button";
-        button.className = "btn btn-primary";
+        button.className = "btn btn-outline-primary";
         button.id = id;
         button.innerHTML = caption;
         return button;
