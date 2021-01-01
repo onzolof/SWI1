@@ -41,6 +41,8 @@ class PageHandler {
     static updatePage(title, breadcrumb, content, listenerStorage) {
         const body = document.createElement('div');
 
+        body.classList.add('container');
+
         if (title != null) {
             body.append(ComponentFactory.createTitle(title))
         }
@@ -63,15 +65,15 @@ class PageHandler {
 class ListenerStorage {
 
     constructor() {
-        this.listeners = [];
+        this._listeners = [];
     }
 
     storeClickListener(id, onClick) {
-        this.listeners.push(() => document.getElementById(id).addEventListener('click', onClick));
+        this._listeners.push(() => document.getElementById(id).addEventListener('click', onClick));
     }
 
     applyListeners() {
-        this.listeners.forEach(listener => listener())
+        this._listeners.forEach(listener => listener())
     }
 
 }

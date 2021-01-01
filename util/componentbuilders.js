@@ -21,9 +21,14 @@ class CardBuilder {
     }
 
     build() {
+        const cardWrapper = document.createElement('div');
+        cardWrapper.classList.add('col-12', 'col-md-6', 'col-lg-4', 'p-1');
+
         const card = document.createElement('div');
-        card.className = 'card';
+        card.classList.add('card', 'col-12');
         card.id = this.id;
+
+        cardWrapper.appendChild(card);
 
         const body = document.createElement('div');
         body.className = 'card-body';
@@ -47,7 +52,7 @@ class CardBuilder {
         subtitle.innerHTML = this.subtitle;
         body.appendChild(subtitle);
 
-        return card;
+        return cardWrapper;
     }
 
 }

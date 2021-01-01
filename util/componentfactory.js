@@ -16,6 +16,7 @@ class ComponentFactory {
 
     static createCardPanel(rooms, storeClickListener) {
         const cardPanel = document.createElement('div');
+        cardPanel.classList.add('row');
         cardPanel.id = 'card-panel';
         rooms.sort(room => !room.available)
             .map(room => {

@@ -2,10 +2,9 @@ body {
     padding: 12px;
 }
 
-#card-panel {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 8px;
+#title, #subtitle, nav {
+    margin-left: -15px;
+    margin-right: -15px;
 }
 
 .card {
