@@ -15,6 +15,16 @@ class CardBuilder {
         return this;
     }
 
+    withAddress(address) {
+        this.address = address;
+        return this;
+    }
+
+    withMaxPersons(maxPersons) {
+        this.maxPersons = maxPersons;
+        return this;
+    }
+
     isAvailable(isAvailable) {
         this.isAvailable = isAvailable;
         return this;
@@ -35,22 +45,32 @@ class CardBuilder {
         card.appendChild(body);
 
         const title = document.createElement('h5');
-        title.className = 'card-title';
+        title.classList.add('card-title', 'text-primary');
 
         title.innerHTML = this.title;
 
-        if (this.isAvailable) {
-            const badge = ComponentFactory.createSuccessBadge(VERFUEGBAR);
-            badge.classList.add('badge-available');
+        if (this.isAvailable === '0') {
+            const badge = ComponentFactory.createWarningBadge(BESETZT);
+            badge.classList.add('badge-occupied');
             title.appendChild(badge);
         }
 
         body.appendChild(title);
 
         const subtitle = document.createElement('h6');
-        subtitle.className = 'card-subtitle';
+        subtitle.classList.add('card-subtitle', 'mb-1');
         subtitle.innerHTML = this.subtitle;
         body.appendChild(subtitle);
+
+        const address = document.createElement('p');
+        address.classList.add('card-text', 'mb-0');
+        address.innerHTML = this.address;
+        body.appendChild(address);
+
+        const maxPersons = document.createElement('p');
+        maxPersons.classList.add('card-text');
+        maxPersons.innerHTML = `${this.maxPersons} Personen`;
+        body.appendChild(maxPersons);
 
         return cardWrapper;
     }

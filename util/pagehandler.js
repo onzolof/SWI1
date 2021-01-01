@@ -6,8 +6,10 @@ class PageHandler {
             .withActiveItem(UEBERSICHT)
             .build();
         const storeListener = (id, room) => listenerStorage.storeClickListener(id, () => PageHandler.navigateToRoom(room));
-        const content = ComponentFactory.createCardPanel(RestClient.getRooms(), storeListener);
+        RestClient.loadRooms(rooms => {
+        const content = ComponentFactory.createCardPanel(rooms, storeListener);
         PageHandler.updatePage(RAUMRESERVIERUNG, breadcrumb, content, listenerStorage);
+        });
     }
 
     static navigateToRoom(room) {

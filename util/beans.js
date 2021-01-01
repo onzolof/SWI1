@@ -1,8 +1,15 @@
 class Room{
 
-    constructor(id, name, available){
+    constructor(id, name, shortname, available, maxpersons, address, price, lat, lon){
         this.id = id;
         this.name = name;
-        this.available = available; 
+        this.shortname = shortname;
+        this.available = available;
+        this.maxpersons = maxpersons; 
+        this.address = address;
+        this.price = price;
+        this.lat = lat;
+        this.lon = lon;
     }
+
 }

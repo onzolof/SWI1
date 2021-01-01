@@ -18,14 +18,15 @@ class ComponentFactory {
         const cardPanel = document.createElement('div');
         cardPanel.classList.add('row');
         cardPanel.id = 'card-panel';
-        rooms.sort(room => !room.available)
-            .map(room => {
+        rooms.map(room => {
                 const elementId = 'card-' + room.id;
                 storeClickListener(elementId, room);
                 return new CardBuilder()
                     .withId(elementId)
                     .withTitle(room.name)
-                    .withSubtitle(room.id)
+                    .withSubtitle(room.shortname)
+                    .withAddress(room.address)
+                    .withMaxPersons(room.maxpersons)
                     .isAvailable(room.available)
                     .build();
             }).forEach(element => cardPanel.appendChild(element));
@@ -60,9 +61,9 @@ class ComponentFactory {
         return button;
     }
 
-    static createSuccessBadge(caption) {
+    static createWarningBadge(caption) {
         const badge = document.createElement('span');
-        badge.className = "badge badge-success";
+        badge.className = "badge badge-warning";
         badge.innerHTML = caption;
         return badge;
     }
