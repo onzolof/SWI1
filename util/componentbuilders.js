@@ -80,11 +80,12 @@ class CardBuilder {
 class BreadCrumbBuilder {
 
     constructor() {
-        this.nonActiveItemSuppliers = [];
+        this._nonActiveItemSuppliers = [];
+        this._headerButtons = [];
     }
 
     withNonActiveItem(id, caption) {
-        this.nonActiveItemSuppliers.push(() => BreadCrumbBuilder.buildNonActiveItem(id, caption))
+        this._nonActiveItemSuppliers.push(() => BreadCrumbBuilder.buildNonActiveItem(id, caption))
         return this;
     }
 
@@ -93,17 +94,27 @@ class BreadCrumbBuilder {
         return this;
     }
 
+    withHeaderButton(btn) {
+        this._headerButtons.push(btn);
+        return this;
+    }
+
     build() {
         const ariaLabel = document.createElement('nav');
         ariaLabel.setAttribute('aria-label', 'breadcrumb');
-
+        ariaLabel.classList.add('row', 'mb-3');
+        
         const orderedList = document.createElement('ol');
-        orderedList.className = "breadcrumb";
+        orderedList.classList.add('breadcrumb', 'flex-grow-1', 'mb-0');
         ariaLabel.appendChild(orderedList);
 
-        this.nonActiveItemSuppliers.forEach(buildItem => orderedList.appendChild(buildItem()))
+        this._nonActiveItemSuppliers.forEach(buildItem => orderedList.appendChild(buildItem()))
 
         orderedList.appendChild(this.activeItemSupplier());
+        
+        this._headerButtons.forEach(button => {
+            ariaLabel.appendChild(button);
+        });
 
         return ariaLabel;
     }
@@ -127,5 +138,23 @@ class BreadCrumbBuilder {
         item.innerHTML = caption;
         return item;
     }
+
+}
+
+class RoomDetailPanelBuilder{
+
+    constructor(){
+
+    }
+
+    build(){
+        const detailPanel = document.createElement('div');
+        detailPanel.classList.add('col-12', 'col-md-6');
+
+
+
+        return detailPanel;
+    }
+
 
 }

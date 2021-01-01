@@ -15,10 +15,17 @@ class PageHandler {
     static navigateToRoom(room) {
         const listenerStorage = new ListenerStorage();
         const overviewPageLinkId = 'go-to-overview';
+
+        const bookButtonId = "booking-button";
+        listenerStorage.storeClickListener(bookButtonId, () => PageHandler.navigateToBooking(room));
+        const bookButton = ComponentFactory.createPrimaryButtonElement(bookButtonId, RESERVIEREN);
+
         const breadcrumb = new BreadCrumbBuilder()
             .withNonActiveItem(overviewPageLinkId, UEBERSICHT)
             .withActiveItem(RAUMINFORMATIONEN)
+            .withHeaderButton(bookButton)
             .build();
+
         listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.navigateToOverview);
         const storeListener = id => listenerStorage.storeClickListener(id, () => PageHandler.navigateToBooking(room));
         const content = ComponentFactory.createRoomPanel(room, storeListener);

@@ -20,27 +20,28 @@ class ComponentFactory {
         cardPanel.classList.add('row');
         cardPanel.id = 'card-panel';
         rooms.map(room => {
-                const elementId = 'card-' + room.id;
-                storeClickListener(elementId, room);
-                return new CardBuilder()
-                    .withId(elementId)
-                    .withTitle(room.name)
-                    .withSubtitle(room.shortname)
-                    .withAddress(room.address)
-                    .withMaxPersons(room.maxpersons)
-                    .isAvailable(room.available)
-                    .build();
-            }).forEach(element => cardPanel.appendChild(element));
+            const elementId = 'card-' + room.id;
+            storeClickListener(elementId, room);
+            return new CardBuilder()
+                .withId(elementId)
+                .withTitle(room.name)
+                .withSubtitle(room.shortname)
+                .withAddress(room.address)
+                .withMaxPersons(room.maxpersons)
+                .isAvailable(room.available)
+                .build();
+        }).forEach(element => cardPanel.appendChild(element));
         return cardPanel;
     }
 
-    static createRoomPanel(room, storeClickListener) {
+    static createRoomPanel(room) {
         const roomPanel = document.createElement('div');
         roomPanel.id = 'room-panel';
-        const bookButtonId = "booking-button";
-        storeClickListener(bookButtonId);
-        const button = ComponentFactory.createPrimaryButtonElement(bookButtonId, RESERVIEREN);
-        roomPanel.appendChild(button);
+
+        const detailPanel = new RoomDetailPanelBuilder()
+            .build();
+        roomPanel.appendChild(detailPanel);
+
         return roomPanel;
     }
 
