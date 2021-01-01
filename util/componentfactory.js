@@ -2,6 +2,7 @@ class ComponentFactory {
 
     static createTitle(text) {
         const title = document.createElement('h1');
+        title.classList.add('pb-2');
         title.id = 'title';
         title.innerHTML = text;
         return title;
