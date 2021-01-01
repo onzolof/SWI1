@@ -34,8 +34,9 @@ class ComponentFactory {
         return cardPanel;
     }
 
-    static createRoomPanel(room) {
+    static createRoomPanel(room, listenerStorage) {
         const roomPanel = document.createElement('div');
+        roomPanel.classList.add('row');
         roomPanel.id = 'room-panel';
 
         const detailPanel = new RoomDetailPanelBuilder()
@@ -46,7 +47,14 @@ class ComponentFactory {
             .withMaxPersons(room.maxpersons)
             .withPrice(room.price)
             .build();
+        detailPanel.classList.add('col-12', 'col-md-6', 'mb-2');
         roomPanel.appendChild(detailPanel);
+
+        const mapElement = document.createElement('div');
+        mapElement.id = 'map';
+        mapElement.classList.add('col-12', 'col-md-6', 'mb-2');
+        roomPanel.appendChild(mapElement);
+        listenerStorage.storeComponentInit(() => ComponentFactory._initMap(room.lat, room.lon));
 
         return roomPanel;
     }
@@ -81,6 +89,19 @@ class ComponentFactory {
         badge.className = "badge badge-success";
         badge.innerHTML = caption;
         return badge;
+    }
+
+    static _initMap(lat, lon) {
+        const map = L.map('map').setView([lat, lon], 17);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoiYmFsZHJpYW4iLCJhIjoiY2tqZWcwbmYxMmtzZDJ1bXRydnR6c3lsZyJ9.EHYZtCxET1MGmNMsyuunKg'
+        }).addTo(map);
+        const marker = L.marker([lat, lon]).addTo(map);
     }
 
 }

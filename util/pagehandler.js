@@ -1,23 +1,23 @@
 class PageHandler {
 
-    static navigateToOverview() {
+    static showOverview() {
         const listenerStorage = new ListenerStorage();
         const breadcrumb = new BreadCrumbBuilder()
             .withActiveItem(UEBERSICHT)
             .build();
-        const storeListener = (id, room) => listenerStorage.storeClickListener(id, () => PageHandler.navigateToRoom(room));
+        const storeListener = (id, room) => listenerStorage.storeClickListener(id, () => PageHandler.showRoom(room));
         RestClient.loadRooms(rooms => {
         const content = ComponentFactory.createCardPanel(rooms, storeListener);
         PageHandler.updatePage(RAUMRESERVIERUNG, breadcrumb, content, listenerStorage);
         });
     }
 
-    static navigateToRoom(room) {
+    static showRoom(room) {
         const listenerStorage = new ListenerStorage();
         const overviewPageLinkId = 'go-to-overview';
 
         const bookButtonId = "booking-button";
-        listenerStorage.storeClickListener(bookButtonId, () => PageHandler.navigateToBooking(room));
+        listenerStorage.storeClickListener(bookButtonId, () => PageHandler.showBooking(room));
         const bookButton = ComponentFactory.createPrimaryButtonElement(bookButtonId, RESERVIEREN);
 
         const breadcrumb = new BreadCrumbBuilder()
@@ -26,13 +26,12 @@ class PageHandler {
             .withHeaderButton(bookButton)
             .build();
 
-        listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.navigateToOverview);
-        const storeListener = id => listenerStorage.storeClickListener(id, () => PageHandler.navigateToBooking(room));
-        const content = ComponentFactory.createRoomPanel(room, storeListener);
+        listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.showOverview);
+        const content = ComponentFactory.createRoomPanel(room, listenerStorage);
         PageHandler.updatePage(RAUMRESERVIERUNG, breadcrumb, content, listenerStorage);
     }
 
-    static navigateToBooking(room) {
+    static showBooking(room) {
         const listenerStorage = new ListenerStorage();
         const overviewPageLinkId = 'go-to-overview';
         const roomPageLinkId = 'go-to-room';
@@ -41,8 +40,8 @@ class PageHandler {
             .withNonActiveItem(roomPageLinkId, RAUMINFORMATIONEN)
             .withActiveItem(RESERVIEREN)
             .build();
-        listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.navigateToOverview);
-        listenerStorage.storeClickListener(roomPageLinkId, () => PageHandler.navigateToRoom(room));
+        listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.showOverview);
+        listenerStorage.storeClickListener(roomPageLinkId, () => PageHandler.showRoom(room));
         const content = ComponentFactory.createBookingPanel(room);
         PageHandler.updatePage(RAUMRESERVIERUNG, breadcrumb, content, listenerStorage);
     }
@@ -81,8 +80,13 @@ class ListenerStorage {
         this._listeners.push(() => document.getElementById(id).addEventListener('click', onClick));
     }
 
+    storeComponentInit(initComponent){
+        this._listeners.push(initComponent);
+    }
+
     applyListeners() {
         this._listeners.forEach(listener => listener())
     }
+
 
 }

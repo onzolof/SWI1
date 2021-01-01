@@ -11,6 +11,10 @@ body {
     cursor: pointer;
 }
 
+#map {
+    height: 205px;
+}
+
 .card:hover {
     background-color:#f1f1f4;
     transition: 0.2s;

@@ -179,7 +179,7 @@ class RoomDetailPanelBuilder {
 
     build() {
         const detailPanel = document.createElement('div');
-        detailPanel.classList.add('col-12', 'col-md-6', 'pl-0');
+        detailPanel.classList.add('pl-0');
 
         this.appendTitle(detailPanel, this.name);
 
