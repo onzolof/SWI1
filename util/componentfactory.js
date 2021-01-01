@@ -39,6 +39,12 @@ class ComponentFactory {
         roomPanel.id = 'room-panel';
 
         const detailPanel = new RoomDetailPanelBuilder()
+            .withName(room.name)
+            .withShortname(room.shortname)
+            .withAvailable(room.available)
+            .withAddress(room.address)
+            .withMaxPersons(room.maxpersons)
+            .withPrice(room.price)
             .build();
         roomPanel.appendChild(detailPanel);
 
@@ -66,6 +72,13 @@ class ComponentFactory {
     static createWarningBadge(caption) {
         const badge = document.createElement('span');
         badge.className = "badge badge-warning";
+        badge.innerHTML = caption;
+        return badge;
+    }
+
+    static createSuccessBadge(caption) {
+        const badge = document.createElement('span');
+        badge.className = "badge badge-success";
         badge.innerHTML = caption;
         return badge;
     }

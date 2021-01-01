@@ -3,3 +3,4 @@ const UEBERSICHT = "Übersicht";
 const RAUMINFORMATIONEN = "Rauminformationen"
 const RESERVIEREN = "Reservieren";
 const BESETZT = "Besetzt";
+const VERFUEGBAR = "Verfügbar";
