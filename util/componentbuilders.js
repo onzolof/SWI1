@@ -50,7 +50,7 @@ class CardBuilder {
         title.innerHTML = this.title;
 
         if (this.isAvailable === '0') {
-            const badge = ComponentFactory.createWarningBadge(BESETZT);
+            const badge = ComponentFactory.createWarningBadge(NICHT_VERFUEGBAR);
             badge.classList.add('badge-occupied');
             title.appendChild(badge);
         }
@@ -216,7 +216,7 @@ class RoomDetailPanelBuilder {
             valueLabel.innerText = VERFUEGBAR;
         } else {
             valueLabel.classList.add('text-warning');;
-            valueLabel.innerText = BESETZT;
+            valueLabel.innerText = NICHT_VERFUEGBAR;
         }
 
         return valueLabel;
