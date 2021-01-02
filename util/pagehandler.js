@@ -85,7 +85,8 @@ class ListenerStorage {
     }
 
     applyListeners() {
-        this._listeners.forEach(listener => listener())
+        this._listeners.forEach(listener => listener());
+        this._listeners = [];
     }
 
 

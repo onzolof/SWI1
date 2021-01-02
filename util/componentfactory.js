@@ -81,6 +81,15 @@ class ComponentFactory {
         return button;
     }
 
+    static createDeleteButton(id, caption) {
+        const button = document.createElement('button');
+        button.type = "button";
+        button.className = "btn btn-outline-danger btn-sm";
+        button.id = id;
+        button.innerHTML = `<i class="far fa-trash-alt"></i> ${caption}`;
+        return button;
+    }
+
     static createWarningBadge(caption) {
         const badge = document.createElement('span');
         badge.className = "badge badge-warning";
@@ -104,14 +113,27 @@ class ComponentFactory {
         durationEntry.classList.add('mb-3');
         bookingsPanel.appendChild(durationEntry);
 
-        const bookingsTableContainer = document.createElement('div');
-        const idTableContainer = 'bookings-table-container';
-        bookingsTableContainer.id = idTableContainer;
-        bookingsPanel.appendChild(bookingsTableContainer);
+        const header = ComponentFactory._createHeaderForBookingsTable();
+        bookingsPanel.appendChild(header)
 
-        const showBookings = (start, end) => {
+        const bookingsTableBodyContainer = document.createElement('div');
+        const idTableContainer = 'bookings-table-container';
+        bookingsTableBodyContainer.id = idTableContainer;
+        bookingsPanel.appendChild(bookingsTableBodyContainer);
+
+        let showBookings;
+
+        const registerDeleteListener = (elementId, bookingId) => listenerStorage.storeClickListener(elementId, () => {
+            RestClient.deleteBooking(bookingId, () => {
+                const dates = $('input[name="datefilter"]').val().split(' - ');
+                showBookings(moment(dates[0], DATE_FORMAT_HUMAN), moment(dates[1], DATE_FORMAT_HUMAN));
+            });
+        });
+
+        showBookings = (start, end) => {
             RestClient.loadBookings(roomId, start, end, bookings => {
-                document.getElementById(idTableContainer).innerHTML = ComponentFactory.createBookingsTable(bookings).outerHTML;
+                document.getElementById(idTableContainer).innerHTML = ComponentFactory.createBookingsTableBody(bookings, registerDeleteListener).outerHTML;
+                listenerStorage.applyListeners();
             });
         }
 
@@ -139,23 +161,15 @@ class ComponentFactory {
         return durationEntry;
     }
 
-    static createBookingsTable(bookings) {
-        const table = document.createElement('table');
-        table.classList.add('table', 'table-striped');
-
-        const header = ComponentFactory._createHeaderForBookingsTable();
-        table.appendChild(header)
-
+    static createBookingsTableBody(bookings, registerDeleteListener) {
         const body = document.createElement('tbody')
 
         bookings.forEach(booking => {
-            const row = ComponentFactory._createRowForBookingTable(booking);
+            const row = ComponentFactory._createRowForBookingTable(booking, registerDeleteListener);
             body.appendChild(row);
         })
 
-        table.appendChild(body);
-
-        return table;
+        return body;
     }
 
     static createEntry(caption, editor) {
@@ -216,41 +230,40 @@ class ComponentFactory {
         const organizer = document.createElement('div');
         organizer.classList.add('col-4', 'col-lg-2', 'font-weight-bold');
         organizer.innerText = 'Organisator';
-        organizer.setAttribute('scope', 'column');
         row.appendChild(organizer);
 
         const email = document.createElement('div');
         email.classList.add('col-4', 'col-lg-2', 'font-weight-bold');
         email.innerText = 'E-Mail';
-        email.setAttribute('scope', 'column');
         row.appendChild(email);
 
         const title = document.createElement('div');
-        title.classList.add('col-3', 'col-lg-2', 'font-weight-bold');
+        title.classList.add('col-4', 'col-lg-2', 'font-weight-bold');
         title.innerText = 'Titel';
-        title.setAttribute('scope', 'column');
         row.appendChild(title);
-
+        
         const start = document.createElement('div');
         start.classList.add('col-4', 'col-lg-2', 'font-weight-bold');
         start.innerText = 'Von';
-        start.setAttribute('scope', 'column');
         row.appendChild(start);
-
+        
         const end = document.createElement('div');
         end.classList.add('col-4', 'col-lg-2', 'font-weight-bold');
         end.innerText = 'Bis';
-        end.setAttribute('scope', 'column');
         row.appendChild(end);
+
+        const actions = document.createElement('div');
+        actions.classList.add('col-4', 'col-lg-2');
+        row.appendChild(actions);
 
         header.appendChild(row);
 
         return header;
     }
 
-    static _createRowForBookingTable(booking) {
+    static _createRowForBookingTable(booking, registerDeleteListener) {
         const row = document.createElement('div');
-        row.classList.add('row', 'no-gutters', 'pb-2', 'pt-2', 'border-bottom');
+        row.classList.add('row', 'no-gutters', 'pb-2', 'pt-2', 'border-bottom', 'align-items-center');
 
         const organizer = document.createElement('div');
         organizer.classList.add('col-4', 'col-lg-2');
@@ -265,7 +278,7 @@ class ComponentFactory {
         row.appendChild(email);
 
         const title = document.createElement('div');
-        title.classList.add('col-3', 'col-lg-2');
+        title.classList.add('col-4', 'col-lg-2');
         title.innerText = booking.title;
         title.setAttribute('scope', 'column');
         row.appendChild(title);
@@ -282,27 +295,13 @@ class ComponentFactory {
         end.setAttribute('scope', 'column');
         row.appendChild(end);
 
-        // const row = document.createElement('tr');
-
-        // const organizer = document.createElement('td');
-        // organizer.innerText = booking.organizer;
-        // row.appendChild(organizer);
-
-        // const email = document.createElement('td');
-        // email.innerText = booking.email;
-        // row.appendChild(email);
-
-        // const title = document.createElement('td');
-        // title.innerText = booking.title;
-        // row.appendChild(title);
-
-        // const start = document.createElement('td');
-        // start.innerText = moment(booking.start).format(DATE_TIME_FORMAT_HUMAN);
-        // row.appendChild(start);
-
-        // const end = document.createElement('td');
-        // end.innerText = moment(booking.end).format(DATE_TIME_FORMAT_HUMAN);
-        // row.appendChild(end);
+        const actions = document.createElement('div');
+        actions.classList.add('col-4', 'col-lg-2', 'order-lg-6');
+        const deleteButtonId = 'delete-btn-' + booking.id;
+        const deleteButton = ComponentFactory.createDeleteButton(deleteButtonId, 'Löschen');
+        registerDeleteListener(deleteButtonId, booking.id);
+        actions.appendChild(deleteButton);
+        row.appendChild(actions);
 
         return row;
     }
