@@ -16,7 +16,7 @@ class RestClient {
 
     static handleError(response) {
         alert('Es ist ein Fehler aufgetreten. Bitte laden Sie die Seite erneut oder versuchen Sie es später noch einmal.')
-        console.log(`error occured (status code ${response.status})`);
+        console.log(`error occured (status code: ${response.status})`);
     }
 
 }

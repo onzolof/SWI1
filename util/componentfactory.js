@@ -258,11 +258,11 @@ class ComponentFactory {
         row.appendChild(title);
 
         const start = document.createElement('td');
-        start.innerText = booking.start;
+        start.innerText = moment(booking.start).format(DATE_TIME_FORMAT_HUMAN);
         row.appendChild(start);
 
         const end = document.createElement('td');
-        end.innerText = booking.end;
+        end.innerText = moment(booking.end).format(DATE_TIME_FORMAT_HUMAN);
         row.appendChild(end);
 
         return row;
