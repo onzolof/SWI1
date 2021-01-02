@@ -1,0 +1,50 @@
+body {
+    padding: 12px;
+}
+
+#title, #subtitle, nav, #room-panel, #bookings-panel {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.card {
+    cursor: pointer;
+}
+
+#map {
+    height: 205px;
+}
+
+#duration-entry{
+    width: 330px;
+}
+
+.entry-caption{
+    width: 190px;
+}
+
+.bookings-header {
+    border-width: 2px !important;
+}
+
+.card:hover {
+    background-color:#f1f1f4;
+    transition: 0.2s;
+    animation: shake 0.1s;
+}
+
+.badge-occupied {
+    margin-left: 8px;
+}
+
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    12.5% { transform: rotate(0.4deg); }
+    25% { transform: rotate(0.8deg); }
+    37.5% { transform: rotate(0.4deg); }
+    50% { transform: rotate(0deg); }
+    62.5% { transform: rotate(-0.4deg); }
+    75% { transform:  rotate(-0.8deg); }
+    87.5% { transform:  rotate(-0.4deg); }
+    100% { transform:  rotate(0deg); }
+  }
