@@ -7,7 +7,7 @@ class PageHandler {
             .build();
         const storeListener = (id, room) => listenerStorage.storeClickListener(id, () => PageHandler.showRoom(room));
         RestClient.loadRooms(rooms => {
-        const content = ComponentFactory.createCardPanel(rooms, storeListener);
+        const content = ComponentFactory.createOverviewPanel(rooms, storeListener);
         PageHandler.updatePage(RAUMRESERVIERUNG, breadcrumb, content, listenerStorage);
         });
     }

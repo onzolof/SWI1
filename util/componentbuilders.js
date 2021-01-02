@@ -182,36 +182,34 @@ class RoomDetailPanelBuilder {
         const detailPanel = document.createElement('div');
         detailPanel.classList.add('pl-0');
 
-        this.appendTitle(detailPanel, this.name);
-
-        this.appendStringPair(detailPanel, 'Kurzname', this.shortname)
-        this.appendPair(detailPanel, 'Status', this.createValueLabelForStatus(this.available))
-        this.appendStringPair(detailPanel, 'Adresse', this.address)
-        this.appendStringPair(detailPanel, 'Kapazität', `${this.maxPersons} Personen`)
-        this.appendStringPair(detailPanel, 'Preis', `CHF ${this.price}`)
+        detailPanel.appendChild(this.createTitle(this.name));
+        detailPanel.appendChild(this.createStringEntry('Kurzname', this.shortname));
+        detailPanel.appendChild(ComponentFactory.createEntry('Status', this.createValueLabelForStatus(this.available)));
+        detailPanel.appendChild(this.createStringEntry('Adresse', this.address));
+        detailPanel.appendChild(this.createStringEntry('Kapazität', `${this.maxPersons} Personen`));
+        detailPanel.appendChild(this.createStringEntry('Preis pro Stunde', `CHF ${this.price}`));
 
         return detailPanel;
     }
 
-    appendTitle(parent, value) {
+    createTitle(value) {
         const title = document.createElement('h4');
         title.classList.add('text-primary', 'mb-3');
         title.innerText = value;
-
-        parent.appendChild(title);
+        return title;
     }
 
-    appendStringPair(parent, caption, value) {
+    createStringEntry(caption, value) {
         const valueLabel = document.createElement('p');
-        valueLabel.classList.add('col-8', 'mb-2');
+        valueLabel.classList.add('mb-2');
         valueLabel.innerText = value;
 
-        this.appendPair(parent, caption, valueLabel);
+        return ComponentFactory.createEntry(caption, valueLabel);
     }
 
     createValueLabelForStatus(status) {
         const valueLabel = document.createElement('p');
-        valueLabel.classList.add('col-8', 'mb-2');
+        valueLabel.classList.add('mb-2');
 
         if (status === '1') {
             valueLabel.classList.add('text-success');
@@ -224,18 +222,5 @@ class RoomDetailPanelBuilder {
         return valueLabel;
     }
 
-    appendPair(parent, caption, valueLabel) {
-        const row = document.createElement('div');
-        row.classList.add('row');
-
-        const captionLabel = document.createElement('p');
-        captionLabel.classList.add('col-4', 'text-muted', 'mb-2');
-        captionLabel.innerText = caption;
-
-        row.appendChild(captionLabel);
-        row.appendChild(valueLabel);
-
-        parent.appendChild(row);
-    }
 
 }
