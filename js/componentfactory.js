@@ -65,12 +65,23 @@ class ComponentFactory {
 
     static createBookingPanel(room) {
         const bookingPanel = document.createElement('div');
+        bookingPanel.classList.add('row');
 
         const form = new FormProvider().get(room);
+        form.classList.add('offset-0', 'col-12', 'offset-md-2', 'col-md-8', 'offset-lg-3', 'col-lg-6');
         
         bookingPanel.appendChild(form);
 
         return bookingPanel;
+    }
+
+    static createPrimaryButton(id, caption) {
+        const button = document.createElement('button');
+        button.type = "button";
+        button.className = "btn btn-primary";
+        button.id = id;
+        button.innerHTML = caption;
+        return button;
     }
 
     static createOutlinePrimaryButton(id, caption) {

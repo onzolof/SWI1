@@ -27,14 +27,14 @@ body {
     border-width: 2px !important;
 }
 
+.badge-occupied {
+    margin-left: 8px;
+}
+
 .card:hover {
     background-color:#f1f1f4;
     transition: 0.2s;
     animation: shake 0.1s;
-}
-
-.badge-occupied {
-    margin-left: 8px;
 }
 
 @keyframes shake {
