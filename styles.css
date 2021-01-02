@@ -23,6 +23,10 @@ body {
     width: 190px;
 }
 
+.bookings-header {
+    border-width: 2px !important;
+}
+
 .card:hover {
     background-color:#f1f1f4;
     transition: 0.2s;

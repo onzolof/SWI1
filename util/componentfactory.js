@@ -197,7 +197,7 @@ class ComponentFactory {
                 applyLabel: 'Übernehmen',
                 format: DATE_FORMAT_HUMAN
             }
-          });
+        });
         $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format(DATE_FORMAT_HUMAN) + ' - ' + picker.endDate.format(DATE_FORMAT_HUMAN));
             onSelect(picker.startDate, picker.endDate);
@@ -210,29 +210,35 @@ class ComponentFactory {
     static _createHeaderForBookingsTable() {
         const header = document.createElement('thead');
 
-        const row = document.createElement('tr');
+        const row = document.createElement('div');
+        row.classList.add('row', 'no-gutters', 'pb-3', 'pt-3', 'border-bottom', 'bookings-header');
 
-        const organizer = document.createElement('th');
+        const organizer = document.createElement('div');
+        organizer.classList.add('col-4', 'col-lg-2', 'font-weight-bold');
         organizer.innerText = 'Organisator';
         organizer.setAttribute('scope', 'column');
         row.appendChild(organizer);
 
-        const email = document.createElement('th');
+        const email = document.createElement('div');
+        email.classList.add('col-4', 'col-lg-2', 'font-weight-bold');
         email.innerText = 'E-Mail';
         email.setAttribute('scope', 'column');
         row.appendChild(email);
 
-        const title = document.createElement('th');
+        const title = document.createElement('div');
+        title.classList.add('col-3', 'col-lg-2', 'font-weight-bold');
         title.innerText = 'Titel';
         title.setAttribute('scope', 'column');
         row.appendChild(title);
 
-        const start = document.createElement('th');
+        const start = document.createElement('div');
+        start.classList.add('col-4', 'col-lg-2', 'font-weight-bold');
         start.innerText = 'Von';
         start.setAttribute('scope', 'column');
         row.appendChild(start);
 
-        const end = document.createElement('th');
+        const end = document.createElement('div');
+        end.classList.add('col-4', 'col-lg-2', 'font-weight-bold');
         end.innerText = 'Bis';
         end.setAttribute('scope', 'column');
         row.appendChild(end);
@@ -243,27 +249,60 @@ class ComponentFactory {
     }
 
     static _createRowForBookingTable(booking) {
-        const row = document.createElement('tr');
+        const row = document.createElement('div');
+        row.classList.add('row', 'no-gutters', 'pb-2', 'pt-2', 'border-bottom');
 
-        const organizer = document.createElement('td');
+        const organizer = document.createElement('div');
+        organizer.classList.add('col-4', 'col-lg-2');
         organizer.innerText = booking.organizer;
+        organizer.setAttribute('scope', 'column');
         row.appendChild(organizer);
 
-        const email = document.createElement('td');
+        const email = document.createElement('div');
+        email.classList.add('col-4', 'col-lg-2');
         email.innerText = booking.email;
+        email.setAttribute('scope', 'column');
         row.appendChild(email);
 
-        const title = document.createElement('td');
+        const title = document.createElement('div');
+        title.classList.add('col-3', 'col-lg-2');
         title.innerText = booking.title;
+        title.setAttribute('scope', 'column');
         row.appendChild(title);
 
-        const start = document.createElement('td');
+        const start = document.createElement('div');
+        start.classList.add('col-4', 'col-lg-2');
         start.innerText = moment(booking.start).format(DATE_TIME_FORMAT_HUMAN);
+        start.setAttribute('scope', 'column');
         row.appendChild(start);
 
-        const end = document.createElement('td');
+        const end = document.createElement('div');
+        end.classList.add('col-4', 'col-lg-2');
         end.innerText = moment(booking.end).format(DATE_TIME_FORMAT_HUMAN);
+        end.setAttribute('scope', 'column');
         row.appendChild(end);
+
+        // const row = document.createElement('tr');
+
+        // const organizer = document.createElement('td');
+        // organizer.innerText = booking.organizer;
+        // row.appendChild(organizer);
+
+        // const email = document.createElement('td');
+        // email.innerText = booking.email;
+        // row.appendChild(email);
+
+        // const title = document.createElement('td');
+        // title.innerText = booking.title;
+        // row.appendChild(title);
+
+        // const start = document.createElement('td');
+        // start.innerText = moment(booking.start).format(DATE_TIME_FORMAT_HUMAN);
+        // row.appendChild(start);
+
+        // const end = document.createElement('td');
+        // end.innerText = moment(booking.end).format(DATE_TIME_FORMAT_HUMAN);
+        // row.appendChild(end);
 
         return row;
     }
