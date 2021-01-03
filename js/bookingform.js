@@ -1,32 +1,115 @@
 class FormProvider {
 
+    constructor(listenerStorage) {
+        this.listenerStorage = listenerStorage;
+    }
+
     get(room) {
         const form = document.createElement('form');
 
         const errorContainer = document.createElement('div');
         errorContainer.id = 'error-container';
-        errorContainer.classList.add('form-grou');
+
+        const roomId = 'room';
+        const roomField = this._newGroup(
+            this._createLabel(roomId, 'Raum'),
+            new InputBuilder(roomId).forText()
+                .setReadonly()
+                .setValue(room.name)
+                .build()
+        )
 
         const nameId = 'name';
         const name = this._newGroup(
             this._createLabel(nameId, 'Name'),
             new InputBuilder(nameId).forText()
                 .setRequired()
+                .setName()
                 .build()
         )
 
+        const emailId = 'email';
+        const email = this._newGroup(
+            this._createLabel(emailId, 'E-Mail'),
+            new InputBuilder(emailId).forEmail()
+                .setPlaceholder('name@domain.com')
+                .setRequired()
+                .setName()
+                .build()
+        )
+
+        const titleId = 'title-id';
+        const title = this._newGroup(
+            this._createLabelForOptional(titleId, 'Titel'),
+            new InputBuilder(titleId).forText()
+                .setName('title')
+                .build()
+        )
+
+        const durationId = 'duration';
+        const duration = this._newGroup(
+            this._createLabel(durationId, 'Dauer'),
+            ComponentFactory.createDurationInput(true)
+        )
+        // todo: validate if datepicker is empty; does baldaufs server check this already?
+        const onSelect = (start, end) => {
+
+        }
+        this.listenerStorage.storeComponentInit(() => ExternalComponentUtil.initDatePicker(onSelect, true, moment(), moment().add(1, 'hour')));
+
+        const priceChfId = 'price-chf';
+        const priceEurId = 'price-eur';
+        const prices = this._createRow(
+            this._newGroup(
+                this._createLabel(priceChfId, 'Preis CHF'),
+                new InputBuilder(priceChfId).forNumber()
+                .setReadonly()
+                .build()
+            ),
+            this._newGroup(
+                this._createLabel(priceEurId, 'Preis EUR'),
+                new InputBuilder(priceEurId).forNumber()
+                .setReadonly()
+                .build()
+            )
+        )
+
         const submitBtn = ComponentFactory.createPrimaryButton('submit-booking', 'Reservieren');
-        submitBtn.classList.add('mt-3');
+        submitBtn.classList.add('mt-2');
 
         form.appendChild(errorContainer);
+        form.appendChild(roomField);
         form.appendChild(name);
+        form.appendChild(email);
+        form.appendChild(title);
+        form.appendChild(duration);
+        form.appendChild(prices);
         form.appendChild(submitBtn);
 
         return form;
     }
 
+    _createRow(a, b) {
+        const row = document.createElement('div');
+        row.classList.add('form-row');
+
+        const left = document.createElement('div');
+        left.classList.add('col');
+        left.appendChild(a);
+        
+        const right = document.createElement('div');
+        right.classList.add('col');
+        right.appendChild(b);
+
+        row.appendChild(left);
+        row.appendChild(right);
+
+        return row;
+    }
+
     _newGroup(label, input, help) {
-        const group = document.createElement('form-group');
+        const group = document.createElement('div');
+        group.classList.add('form-group');
 
         if (label !== undefined) {
             group.appendChild(label);
@@ -43,10 +126,14 @@ class FormProvider {
         return group;
     }
 
+    _createLabelForOptional(id, caption) {
+        return this._createLabel(id, `${caption} <span class="text-muted">(Optional)</span>`);
+    }
+
     _createLabel(id, caption) {
         const label = document.createElement('label');
         label.setAttribute('for', id);
-        label.innerText = caption;
+        label.innerHTML = caption;
         return label;
     }
 
@@ -77,6 +164,10 @@ class InputBuilder {
         return new InputConfigurator(this.id, 'text');
     }
 
+    forNumber() {
+        return new InputConfigurator(this.id, 'number');
+    }
+
 }
 
 class InputConfigurator {
@@ -101,6 +192,16 @@ class InputConfigurator {
         return this;
     }
 
+    setName(name) {
+        this.name = name !== undefined ? name : this.id;
+        return this;
+    }
+
+    setValue(value) {
+        this.value = value;
+        return this;
+    }
+
     setText(text) {
         this.text = text;
         return this;
@@ -110,8 +211,11 @@ class InputConfigurator {
         const input = document.createElement('input');
         input.id = this.id;
         input.classList.add('form-control');
-        input.setAttribute('name', this.id);
         input.setAttribute('type', this.type);
+
+        if (this.name !== undefined) {
+            input.setAttribute('name', this.name);
+        }
 
         if (this.readOnly !== undefined) {
             input.setAttribute('readOnly', this.readOnly);
@@ -123,6 +227,10 @@ class InputConfigurator {
 
         if (this.placeholder !== undefined) {
             input.setAttribute('placeholder', this.placeholder);
+        }
+
+        if (this.value !== undefined) {
+            input.setAttribute('value', this.value);
         }
 
         if (this.text !== undefined) {

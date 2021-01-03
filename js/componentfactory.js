@@ -54,7 +54,7 @@ class ComponentFactory {
         mapElement.id = 'map';
         mapElement.classList.add('col-12', 'col-md-6');
         roomPanel.appendChild(mapElement);
-        listenerStorage.storeComponentInit(() => ComponentFactory._initMap(room.lat, room.lon));
+        listenerStorage.storeComponentInit(() => ExternalComponentUtil.initLeafletMap(room.lat, room.lon));
 
         const bookingsPanel = ComponentFactory.createBookingsPanel(room.id, listenerStorage);
         bookingsPanel.classList.add('col-12', 'mt-4');
@@ -63,11 +63,11 @@ class ComponentFactory {
         return roomPanel;
     }
 
-    static createBookingPanel(room) {
+    static createBookingPanel(listenerStorage, room) {
         const bookingPanel = document.createElement('div');
         bookingPanel.classList.add('row');
 
-        const form = new FormProvider().get(room);
+        const form = new FormProvider(listenerStorage).get(room);
         form.classList.add('offset-0', 'col-12', 'offset-md-2', 'col-md-8', 'offset-lg-3', 'col-lg-6');
         
         bookingPanel.appendChild(form);
@@ -120,7 +120,8 @@ class ComponentFactory {
         const bookingsPanel = document.createElement('div');
         bookingsPanel.id = 'bookings-panel';
 
-        const selector = ComponentFactory.createDurationSelector();
+        const selector = ComponentFactory.createDurationInput();
+        selector.classList.add('small-duration-input');
         const durationEntry = ComponentFactory.createEntry('Betrachtungszeitraum', selector);
         durationEntry.classList.add('mb-3');
         bookingsPanel.appendChild(durationEntry);
@@ -149,7 +150,7 @@ class ComponentFactory {
             });
         }
 
-        listenerStorage.storeComponentInit(() => ComponentFactory._initDurationSelection(showBookings))
+        listenerStorage.storeComponentInit(() => ExternalComponentUtil.initDatePicker(showBookings, false, moment().add(-100, 'day'), moment()));
 
         listenerStorage.storeComponentInit(() => {
             const start = moment().add(-100, 'day');
@@ -161,16 +162,15 @@ class ComponentFactory {
         return bookingsPanel;
     }
 
-    static createDurationSelector() {
-        const durationEntry = document.createElement('input');
+    static createDurationInput() {
+        const durationInput = document.createElement('input');
 
-        durationEntry.id = 'duration-entry';
-        durationEntry.classList.add('form-control');
-        durationEntry.setAttribute('type', 'text');
-        durationEntry.setAttribute('name', 'datefilter');
-        durationEntry.setAttribute('placeholder', 'Wählen Sie eine Zeitspanne');
+        durationInput.classList.add('form-control');
+        durationInput.setAttribute('type', 'text');
+        durationInput.setAttribute('name', 'datefilter');
+        durationInput.setAttribute('placeholder', 'Wählen Sie eine Zeitspanne');
 
-        return durationEntry;
+        return durationInput;
     }
 
     static createBookingsTableBody(bookings, registerDeleteListener) {
@@ -196,41 +196,6 @@ class ComponentFactory {
         row.appendChild(editor);
 
         return row;
-    }
-
-    static _initMap(lat, lon) {
-        const map = L.map('map').setView([lat, lon], 17);
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'pk.eyJ1IjoiYmFsZHJpYW4iLCJhIjoiY2tqZWcwbmYxMmtzZDJ1bXRydnR6c3lsZyJ9.EHYZtCxET1MGmNMsyuunKg'
-        }).addTo(map);
-        L.marker([lat, lon]).addTo(map);
-    }
-
-    static _initDurationSelection(onSelect) {
-        $('input[name="datefilter"]').daterangepicker({
-            startDate: moment().add(-100, 'day'),
-            endDate: moment(),
-            autoUpdateInput: false,
-            minYear: 2000,
-            maxYear: 2100,
-            locale: {
-                cancelLabel: 'Abbrechen',
-                applyLabel: 'Übernehmen',
-                format: DATE_FORMAT_HUMAN
-            }
-        });
-        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
-            $(this).val(picker.startDate.format(DATE_FORMAT_HUMAN) + ' - ' + picker.endDate.format(DATE_FORMAT_HUMAN));
-            onSelect(picker.startDate, picker.endDate);
-        });
-        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
-            $(this).val('');
-        });
     }
 
     static _createHeaderForBookingsTable() {

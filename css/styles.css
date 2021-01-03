@@ -15,7 +15,7 @@ body {
     height: 205px;
 }
 
-#duration-entry{
+.small-duration-input {
     width: 330px;
 }
 

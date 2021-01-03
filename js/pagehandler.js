@@ -42,7 +42,7 @@ class PageHandler {
             .build();
         listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.showOverview);
         listenerStorage.storeClickListener(roomPageLinkId, () => PageHandler.showRoom(room));
-        const content = ComponentFactory.createBookingPanel(room);
+        const content = ComponentFactory.createBookingPanel(listenerStorage, room);
         PageHandler.updatePage(RAUMRESERVIERUNG, breadcrumb, content, listenerStorage);
     }
 
