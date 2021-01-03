@@ -31,7 +31,7 @@ class FormProvider {
 
         const titleId = 'title-id';
         const title = this._newGroup(
-            this._createLabelForOptional(titleId, 'Titel'),
+            this._createLabelForOptional(titleId, 'Meetingtitel'),
             new InputBuilder(titleId).forText()
                 .setName('title')
                 .build()
@@ -73,7 +73,7 @@ class FormProvider {
 
             // this.listenerStorage.applyListeners();
         }
-        
+
         this.listenerStorage.storeComponentInit(() => ExternalComponentUtil.initDatePicker(onSelect, true, moment(), moment().add(1, 'hour')));
 
         // todo: validate if datepicker is empty; does baldaufs server check this already?

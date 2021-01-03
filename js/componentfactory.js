@@ -98,7 +98,7 @@ class ComponentFactory {
         button.type = "button";
         button.className = "btn btn-outline-danger btn-sm";
         button.id = id;
-        button.innerHTML = `<i class="far fa-trash-alt"></i> ${caption}`;
+        button.innerHTML = `<i class="far fa-trash-alt"></i><span class="d-none d-lg-inline"> ${caption}<span>`;
         return button;
     }
 
@@ -119,6 +119,7 @@ class ComponentFactory {
     static createBookingsPanel(roomId, listenerStorage) {
         const bookingsPanel = document.createElement('div');
         bookingsPanel.id = 'bookings-panel';
+        bookingsPanel.classList.add('pr-0');
 
         const selector = ComponentFactory.createDurationInput();
         selector.classList.add('small-duration-input');
@@ -273,7 +274,7 @@ class ComponentFactory {
         row.appendChild(end);
 
         const actions = document.createElement('div');
-        actions.classList.add('col-4', 'col-lg-2', 'order-lg-6');
+        actions.classList.add('col-4', 'col-lg-2', 'order-lg-6', 'text-right');
         const deleteButtonId = 'delete-btn-' + booking.id;
         const deleteButton = ComponentFactory.createDeleteButton(deleteButtonId, 'Löschen');
         registerDeleteListener(deleteButtonId, booking.id);
