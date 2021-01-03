@@ -51,29 +51,38 @@ class FormProvider {
             this._createLabel(durationId, 'Dauer'),
             ComponentFactory.createDurationInput(true)
         )
-        // todo: validate if datepicker is empty; does baldaufs server check this already?
-        const onSelect = (start, end) => {
 
+        const priceChfId = 'price-chf';
+        const priceChfInput = new InputBuilder(priceChfId).forNumber()
+            .setReadonly()
+            .setValue(0)
+            .build();
+        const priceEurId = 'price-eur';
+        const priceEurInput = new InputBuilder(priceEurId).forNumber()
+            .setReadonly()
+            .setValue(0)
+            .build();
+        const priceEurHelpId = 'price-eur-help';
+        const priceEurHelp = this._createHelp(priceEurHelpId);
+        const prices = this._createRow(
+            this._newGroup(this._createLabel(priceChfId, 'Preis CHF'), priceChfInput),
+            this._newGroup(this._createLabel(priceEurId, 'Preis EUR'), priceEurInput, priceEurHelp)
+        )
+
+        const onSelect = (start, end) => {
+            const diff = this._calculateHours(start, end);
+            const priceChf = diff * room.price;
+            document.getElementById(priceChfId).value = priceChf.toFixed(2);
+            RestClient.lookupEur((rate, date) => {
+                document.getElementById(priceEurId).value = (rate * priceChf).toFixed(2);
+                document.getElementById(priceEurHelpId).innerText = `Kurs vom ${moment(date).format(DATE_FORMAT_HUMAN)}`;
+            })
+
+            // this.listenerStorage.applyListeners();
         }
         this.listenerStorage.storeComponentInit(() => ExternalComponentUtil.initDatePicker(onSelect, true, moment(), moment().add(1, 'hour')));
 
-        const priceChfId = 'price-chf';
-        const priceEurId = 'price-eur';
-        const prices = this._createRow(
-            this._newGroup(
-                this._createLabel(priceChfId, 'Preis CHF'),
-                new InputBuilder(priceChfId).forNumber()
-                .setReadonly()
-                .build()
-            ),
-            this._newGroup(
-                this._createLabel(priceEurId, 'Preis EUR'),
-                new InputBuilder(priceEurId).forNumber()
-                .setReadonly()
-                .build()
-            )
-        )
-
+        // todo: validate if datepicker is empty; does baldaufs server check this already?
         const submitBtn = ComponentFactory.createPrimaryButton('submit-booking', 'Reservieren');
         submitBtn.classList.add('mt-2');
 
@@ -96,7 +105,7 @@ class FormProvider {
         const left = document.createElement('div');
         left.classList.add('col');
         left.appendChild(a);
-        
+
         const right = document.createElement('div');
         right.classList.add('col');
         right.appendChild(b);
@@ -137,11 +146,15 @@ class FormProvider {
         return label;
     }
 
-    _createHelp(text) {
+    _createHelp(id) {
         const help = document.createElement('small');
+        help.id = id;
         help.classList.add('form-text', 'text-muted');
-        help.innerText = text;
         return help;
+    }
+
+    _calculateHours(start, end) {
+        return moment.duration(end.diff(start)).asHours();
     }
 
 }

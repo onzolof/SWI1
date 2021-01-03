@@ -21,7 +21,15 @@ class RestClient {
         fetch(`https://matthiasbaldauf.com/swi1hs20/booking?id=${bookingId}&studid=${STUDENT_ID}`, {
             method: 'DELETE'
         }).then(reload)
-          .catch(RestClient._handleError);
+            .catch(RestClient._handleError);
+    }
+
+    static lookupEur(handleResult) {
+        console.log(`lookup eur exchange rate`);
+        fetch(`https://api.exchangeratesapi.io/latest?base=CHF&symbols=EUR`)
+            .then(response => response.json())
+            .then(response => handleResult(response.rates.EUR, response.date))
+            .catch(RestClient._handleError);
     }
 
     static _handleError(response) {
