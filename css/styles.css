@@ -27,6 +27,17 @@ body {
     border-width: 2px !important;
 }
 
+.breadcrumb {
+    padding: 16px 0;
+    font-size: 20px;
+    background: white;
+}
+
+#booking-button {
+    height: min-content;
+    margin: auto;
+}
+
 .badge-occupied {
     margin-left: 8px;
 }

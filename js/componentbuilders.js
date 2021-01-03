@@ -182,7 +182,7 @@ class RoomDetailPanelBuilder {
         const detailPanel = document.createElement('div');
         detailPanel.classList.add('pl-0');
 
-        detailPanel.appendChild(this.createTitle(this.name));
+        detailPanel.appendChild(this.createStringEntry('Name', this.name));
         detailPanel.appendChild(this.createStringEntry('Kurzname', this.shortname));
         detailPanel.appendChild(ComponentFactory.createEntry('Status', this.createValueLabelForStatus(this.available)));
         detailPanel.appendChild(this.createStringEntry('Adresse', this.address));
@@ -190,13 +190,6 @@ class RoomDetailPanelBuilder {
         detailPanel.appendChild(this.createStringEntry('Preis pro Stunde', `CHF ${this.price}`));
 
         return detailPanel;
-    }
-
-    createTitle(value) {
-        const title = document.createElement('h4');
-        title.classList.add('text-primary', 'mb-3');
-        title.innerText = value;
-        return title;
     }
 
     createStringEntry(caption, value) {

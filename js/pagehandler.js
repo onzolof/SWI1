@@ -22,7 +22,7 @@ class PageHandler {
 
         const breadcrumb = new BreadCrumbBuilder()
             .withNonActiveItem(overviewPageLinkId, UEBERSICHT)
-            .withActiveItem(RAUMINFORMATIONEN)
+            .withActiveItem(room.name)
             .withHeaderButton(bookButton)
             .build();
 
@@ -37,7 +37,7 @@ class PageHandler {
         const roomPageLinkId = 'go-to-room';
         const breadcrumb = new BreadCrumbBuilder()
             .withNonActiveItem(overviewPageLinkId, UEBERSICHT)
-            .withNonActiveItem(roomPageLinkId, RAUMINFORMATIONEN)
+            .withNonActiveItem(roomPageLinkId, room.name)
             .withActiveItem(RESERVIEREN)
             .build();
         listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.showOverview);
