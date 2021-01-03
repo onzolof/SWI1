@@ -54,7 +54,7 @@ class ComponentFactory {
         mapElement.id = 'map';
         mapElement.classList.add('col-12', 'col-md-6');
         roomPanel.appendChild(mapElement);
-        listenerStorage.storeComponentInit(() => ExternalComponentUtil.initLeafletMap(room.lat, room.lon));
+        listenerStorage.storeComponentInit(() => MapUtil.initLeafletMap(room.lat, room.lon));
 
         const bookingsPanel = ComponentFactory.createBookingsPanel(room.id, listenerStorage);
         bookingsPanel.classList.add('col-12', 'mt-4');
@@ -75,9 +75,9 @@ class ComponentFactory {
         return bookingPanel;
     }
 
-    static createPrimaryButton(id, caption) {
+    static createSubmitButton(id, caption) {
         const button = document.createElement('button');
-        button.type = "button";
+        button.type = "submit";
         button.className = "btn btn-primary";
         button.id = id;
         button.innerHTML = caption;
@@ -121,7 +121,8 @@ class ComponentFactory {
         bookingsPanel.id = 'bookings-panel';
         bookingsPanel.classList.add('pr-0');
 
-        const selector = ComponentFactory.createDurationInput();
+        const datePicker = new DatePicker();
+        const selector = datePicker.createInput();
         selector.classList.add('small-duration-input');
         const durationEntry = ComponentFactory.createEntry('Betrachtungszeitraum', selector);
         durationEntry.classList.add('mb-3');
@@ -139,8 +140,8 @@ class ComponentFactory {
 
         const registerDeleteListener = (elementId, bookingId) => listenerStorage.storeClickListener(elementId, () => {
             RestClient.deleteBooking(bookingId, () => {
-                const dates = $('input[name="datefilter"]').val().split(' - ');
-                showBookings(moment(dates[0], DATE_FORMAT_HUMAN), moment(dates[1], DATE_FORMAT_HUMAN));
+                const values = datePicker.getValues();
+                showBookings(values.start, values.end);
             });
         });
 
@@ -151,27 +152,15 @@ class ComponentFactory {
             });
         }
 
-        listenerStorage.storeComponentInit(() => ExternalComponentUtil.initDatePicker(showBookings, false, moment().add(-100, 'day'), moment()));
+        listenerStorage.storeComponentInit(() => datePicker.initDatePicker(showBookings, false, moment().add(-100, 'day'), moment()));
 
         listenerStorage.storeComponentInit(() => {
             const start = moment().add(-100, 'day');
             const end = moment();
-            showBookings(start, end);
-            $('input[name="datefilter"]').val(start.format(DATE_FORMAT_HUMAN) + ' - ' + end.format(DATE_FORMAT_HUMAN));
+            datePicker.setValues(showBookings, start, end);
         });
 
         return bookingsPanel;
-    }
-
-    static createDurationInput() {
-        const durationInput = document.createElement('input');
-
-        durationInput.classList.add('form-control');
-        durationInput.setAttribute('type', 'text');
-        durationInput.setAttribute('name', 'datefilter');
-        durationInput.setAttribute('placeholder', 'Wählen Sie eine Zeitspanne');
-
-        return durationInput;
     }
 
     static createBookingsTableBody(bookings, registerDeleteListener) {

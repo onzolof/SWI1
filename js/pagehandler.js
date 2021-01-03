@@ -80,12 +80,18 @@ class ListenerStorage {
         this._listeners.push(() => document.getElementById(id).addEventListener('click', onClick));
     }
 
+    storeSubmitListener(id, onSubmit) {
+        this._listeners.push(() => document.getElementById(id).addEventListener('submit', onSubmit));
+    }
+
     storeComponentInit(initComponent){
         this._listeners.push(initComponent);
     }
 
     applyListeners() {
-        this._listeners.forEach(listener => listener());
+        this._listeners.forEach(listener => {
+            return listener();
+        });
         this._listeners = [];
     }
 
