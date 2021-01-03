@@ -10,15 +10,6 @@ class FormProvider {
         const errorContainer = document.createElement('div');
         errorContainer.id = 'error-container';
 
-        const roomId = 'room';
-        const roomField = this._newGroup(
-            this._createLabel(roomId, 'Raum'),
-            new InputBuilder(roomId).forText()
-                .setReadonly()
-                .setValue(room.name)
-                .build()
-        )
-
         const nameId = 'name';
         const name = this._newGroup(
             this._createLabel(nameId, 'Name'),
@@ -57,6 +48,7 @@ class FormProvider {
             .setReadonly()
             .setValue(0)
             .build();
+
         const priceEurId = 'price-eur';
         const priceEurInput = new InputBuilder(priceEurId).forNumber()
             .setReadonly()
@@ -64,6 +56,7 @@ class FormProvider {
             .build();
         const priceEurHelpId = 'price-eur-help';
         const priceEurHelp = this._createHelp(priceEurHelpId);
+        
         const prices = this._createRow(
             this._newGroup(this._createLabel(priceChfId, 'Preis CHF'), priceChfInput),
             this._newGroup(this._createLabel(priceEurId, 'Preis EUR'), priceEurInput, priceEurHelp)
@@ -80,6 +73,7 @@ class FormProvider {
 
             // this.listenerStorage.applyListeners();
         }
+        
         this.listenerStorage.storeComponentInit(() => ExternalComponentUtil.initDatePicker(onSelect, true, moment(), moment().add(1, 'hour')));
 
         // todo: validate if datepicker is empty; does baldaufs server check this already?
@@ -87,7 +81,6 @@ class FormProvider {
         submitBtn.classList.add('mt-2');
 
         form.appendChild(errorContainer);
-        form.appendChild(roomField);
         form.appendChild(name);
         form.appendChild(email);
         form.appendChild(title);
