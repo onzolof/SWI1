@@ -76,9 +76,12 @@ class FormProvider {
 
         this.listenerStorage.storeComponentInit(() => ExternalComponentUtil.initDatePicker(onSelect, true, moment(), moment().add(1, 'hour')));
 
+        const buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('text-right');
         // todo: validate if datepicker is empty; does baldaufs server check this already?
         const submitBtn = ComponentFactory.createPrimaryButton('submit-booking', 'Reservieren');
         submitBtn.classList.add('mt-2');
+        buttonContainer.appendChild(submitBtn);
 
         form.appendChild(errorContainer);
         form.appendChild(name);
@@ -86,7 +89,7 @@ class FormProvider {
         form.appendChild(title);
         form.appendChild(duration);
         form.appendChild(prices);
-        form.appendChild(submitBtn);
+        form.appendChild(buttonContainer);
 
         return form;
     }
