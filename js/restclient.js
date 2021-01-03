@@ -21,8 +21,13 @@ class RestClient {
         fetch(`https://matthiasbaldauf.com/swi1hs20/booking?id=${bookingId}&studid=${STUDENT_ID}`, {
             method: 'DELETE'
         }).then(response => response.json())
-            .then(reload)
-            .catch(RestClient._handleError);
+            .then(response => {
+                if (response.success) {
+                    reload();
+                } else {
+                    console.log(`could not delete booking with id ${bookingId}`);
+                }
+            }).catch(RestClient._handleError);
     }
 
     static lookupEur(handleResult) {

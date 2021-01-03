@@ -22,6 +22,7 @@ class FormProvider {
                 .forText()
                 .setRequired()
                 .setName('organizer')
+                .setValue(localStorage.getItem(STORAGE_KEY_NAME) || '')
                 .build()
         )
 
@@ -33,6 +34,7 @@ class FormProvider {
                 .setPlaceholder('name@domain.com')
                 .setRequired()
                 .setName()
+                .setValue(localStorage.getItem(STORAGE_KEY_EMAIL) || '')
                 .build()
         )
 
@@ -116,12 +118,15 @@ class FormProvider {
         data.append('start', values.start.format(DATE_TIME_FORMAT_MACHINE));
         data.append('end', values.end.format(DATE_TIME_FORMAT_MACHINE));
 
+        localStorage.setItem(STORAGE_KEY_NAME, data.get('organizer'));
+        localStorage.setItem(STORAGE_KEY_EMAIL, data.get('email'));
+
         if (values.start.isValid() && values.start.isValid()) {
             RestClient.saveBooking(data, (success, message) => {
                 return this._handleResult(success, message)
             });
         } else {
-            this._displayError('Ungültiger Zeitraum eingegeben.');
+            ErrorHandler.displayError('Bitte geben Sie einen gültigen Zeitraum ein.');
         }
     }
 
