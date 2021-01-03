@@ -46,6 +46,7 @@ class DatePicker {
             autoUpdateInput: false,
             minYear: 2000,
             maxYear: 2100,
+            timePickerIncrement: 5,
             timePicker: this.showTime,
             timePicker24Hour: this.showTime,
             locale: {

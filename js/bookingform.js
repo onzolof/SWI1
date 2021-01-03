@@ -115,8 +115,8 @@ class FormProvider {
         const values = datePicker.getValues();
         data.append('roomid', room.id);
         data.append('studid', STUDENT_ID);
-        data.append('start', values.start.format(DATE_TIME_FORMAT_MACHINE));
-        data.append('end', values.end.format(DATE_TIME_FORMAT_MACHINE));
+        data.append('start', values.start.format().split('+')[0]);
+        data.append('end', values.end.format().split('+')[0]);
 
         localStorage.setItem(STORAGE_KEY_NAME, data.get('organizer'));
         localStorage.setItem(STORAGE_KEY_EMAIL, data.get('email'));
