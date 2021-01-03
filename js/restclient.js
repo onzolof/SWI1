@@ -20,7 +20,8 @@ class RestClient {
         console.log(`delete booking with id ${bookingId}`);
         fetch(`https://matthiasbaldauf.com/swi1hs20/booking?id=${bookingId}&studid=${STUDENT_ID}`, {
             method: 'DELETE'
-        }).then(reload)
+        }).then(response => response.json())
+            .then(reload)
             .catch(RestClient._handleError);
     }
 
@@ -32,9 +33,27 @@ class RestClient {
             .catch(RestClient._handleError);
     }
 
+    static saveBooking(data, handleResult) {
+        console.log(`save booking`);
+        console.log(RestClient._formDataToJson(data));
+        fetch(`https://matthiasbaldauf.com/swi1hs20/booking`, {
+            method: 'POST',
+            body: data
+        }).then(response => response.json())
+            .then(response => handleResult(response.success, response.message))
+            .catch(response => RestClient._handleError(response));
+    }
+
     static _handleError(response) {
         alert('Es ist ein Fehler aufgetreten. Bitte laden Sie die Seite erneut oder versuchen Sie es später noch einmal.')
-        console.log(`error occured (status code: ${response.status})`);
+        console.log(`error occured (status code: ${response.errorcode})`);
+    }
+
+    static _formDataToJson(data) {
+        var object = {};
+        data.forEach((value, key) => object[key] = value);
+        var json = JSON.stringify(object);
+        return json;
     }
 
 }

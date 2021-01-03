@@ -1,7 +1,8 @@
 class FormProvider {
 
-    constructor(listenerStorage) {
+    constructor(listenerStorage, onSuccess) {
         this.listenerStorage = listenerStorage;
+        this.onSuccess = onSuccess;
     }
 
     get(room) {
@@ -12,7 +13,7 @@ class FormProvider {
 
         const errorContainer = document.createElement('div');
         errorContainer.classList.add('mb-2');
-        errorContainer.id = 'error-container';
+        errorContainer.id = ID_ERROR_CONTAINER;
 
         const nameId = 'name';
         const name = this._newGroup(
@@ -44,7 +45,7 @@ class FormProvider {
                 .build()
         )
 
-        const datePicker = new DatePicker();
+        const datePicker = new DatePicker(true);
         const durationId = 'duration';
         const duration = this._newGroup(
             this._createLabel(durationId, 'Dauer'),
@@ -91,19 +92,8 @@ class FormProvider {
         buttonContainer.appendChild(submitBtn);
 
         this.listenerStorage.storeSubmitListener(formId, (e) => {
-            const data = new FormData(document.getElementById(formId));
-            const values = datePicker.getValues();
-            data.append('roomid', room.id);
-            data.append('studid', STUDENT_ID);
-            data.append('start', values.start);
-            data.append('end', values.end);
-
-            // todo
-            var object = {};
-            data.forEach((value, key) => object[key] = value);
-            var json = JSON.stringify(object);
-            console.log(json);
-
+            e.preventDefault();
+            this._submit(formId, datePicker, room);
             return false;
         })
 
@@ -116,6 +106,31 @@ class FormProvider {
         form.appendChild(buttonContainer);
 
         return form;
+    }
+
+    _submit(formId, datePicker, room) {
+        const data = new FormData(document.getElementById(formId));
+        const values = datePicker.getValues();
+        data.append('roomid', room.id);
+        data.append('studid', STUDENT_ID);
+        data.append('start', values.start.format(DATE_TIME_FORMAT_MACHINE));
+        data.append('end', values.end.format(DATE_TIME_FORMAT_MACHINE));
+
+        if (values.start.isValid() && values.start.isValid()) {
+            RestClient.saveBooking(data, (success, message) => {
+                return this._handleResult(success, message)
+            });
+        } else {
+            this._displayError('Ungültiger Zeitraum eingegeben.');
+        }
+    }
+
+    _handleResult(success, message) {
+        if (success) {
+            this.onSuccess(message);
+        } else {
+            ErrorHandler.displayError(message);
+        }
     }
 
     _createRow(a, b) {

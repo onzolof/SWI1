@@ -39,6 +39,11 @@ class ComponentFactory {
         roomPanel.classList.add('row');
         roomPanel.id = 'room-panel';
 
+        const errorPanel = document.createElement('div');
+        errorPanel.id = ID_ERROR_CONTAINER;
+        errorPanel.classList.add('col-12', 'p-0');
+        roomPanel.appendChild(errorPanel);
+
         const detailPanel = new RoomDetailPanelBuilder()
             .withName(room.name)
             .withShortname(room.shortname)
@@ -63,11 +68,11 @@ class ComponentFactory {
         return roomPanel;
     }
 
-    static createBookingPanel(listenerStorage, room) {
+    static createBookingPanel(listenerStorage, onSuccess, room) {
         const bookingPanel = document.createElement('div');
         bookingPanel.classList.add('row');
 
-        const form = new FormProvider(listenerStorage).get(room);
+        const form = new FormProvider(listenerStorage, onSuccess).get(room);
         form.classList.add('offset-0', 'col-12', 'offset-md-2', 'col-md-8', 'offset-lg-3', 'col-lg-6');
         
         bookingPanel.appendChild(form);
@@ -119,7 +124,7 @@ class ComponentFactory {
     static createBookingsPanel(roomId, listenerStorage) {
         const bookingsPanel = document.createElement('div');
         bookingsPanel.id = 'bookings-panel';
-        bookingsPanel.classList.add('pr-0');
+        bookingsPanel.classList.add('pl-0', 'pr-0');
 
         const datePicker = new DatePicker();
         const selector = datePicker.createInput();
@@ -152,15 +157,31 @@ class ComponentFactory {
             });
         }
 
-        listenerStorage.storeComponentInit(() => datePicker.initDatePicker(showBookings, false, moment().add(-100, 'day'), moment()));
+        listenerStorage.storeComponentInit(() => datePicker.initDatePicker(showBookings, moment().add(-10, 'day'), moment().add(30, 'day')));
 
         listenerStorage.storeComponentInit(() => {
-            const start = moment().add(-100, 'day');
-            const end = moment();
+            const start = moment().add(-10, 'day');
+            const end = moment().add(30, 'day');
             datePicker.setValues(showBookings, start, end);
         });
 
         return bookingsPanel;
+    }
+
+    static createDangerAlert(message){
+        const alert = document.createElement('div');
+        alert.classList.add('alert', 'alert-danger');
+        alert.setAttribute('role', 'alert');
+        alert.innerText = message;
+        return alert;
+    }
+
+    static createSuccessAlert(message){
+        const alert = document.createElement('div');
+        alert.classList.add('alert', 'alert-success');
+        alert.setAttribute('role', 'alert');
+        alert.innerText = message;
+        return alert;
     }
 
     static createBookingsTableBody(bookings, registerDeleteListener) {

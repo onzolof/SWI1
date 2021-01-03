@@ -7,8 +7,8 @@ class PageHandler {
             .build();
         const storeListener = (id, room) => listenerStorage.storeClickListener(id, () => PageHandler.showRoom(room));
         RestClient.loadRooms(rooms => {
-        const content = ComponentFactory.createOverviewPanel(rooms, storeListener);
-        PageHandler.updatePage(RAUMRESERVIERUNG, breadcrumb, content, listenerStorage);
+            const content = ComponentFactory.createOverviewPanel(rooms, storeListener);
+            PageHandler.updatePage(RAUMRESERVIERUNG, breadcrumb, content, listenerStorage);
         });
     }
 
@@ -42,7 +42,10 @@ class PageHandler {
             .build();
         listenerStorage.storeClickListener(overviewPageLinkId, PageHandler.showOverview);
         listenerStorage.storeClickListener(roomPageLinkId, () => PageHandler.showRoom(room));
-        const content = ComponentFactory.createBookingPanel(listenerStorage, room);
+        const content = ComponentFactory.createBookingPanel(listenerStorage, message => {
+            PageHandler.showRoom(room);
+            ErrorHandler.displaySuccess(message);
+        }, room);
         PageHandler.updatePage(RAUMRESERVIERUNG, breadcrumb, content, listenerStorage);
     }
 
@@ -70,6 +73,26 @@ class PageHandler {
 
 }
 
+class ErrorHandler {
+
+    static displayError(message) {
+        ErrorHandler._displayAlert(ComponentFactory.createDangerAlert(message));
+    }
+
+    static displaySuccess(message) {
+        ErrorHandler._displayAlert(ComponentFactory.createSuccessAlert(message));
+    }
+
+    static _displayAlert(alert) {
+        const errorContainer = document.getElementById(ID_ERROR_CONTAINER);
+        if (errorContainer !== null) {
+            errorContainer.childNodes.forEach(node => errorContainer.removeChild(node));
+            errorContainer.appendChild(alert);
+        }
+    }
+
+}
+
 class ListenerStorage {
 
     constructor() {
@@ -84,7 +107,7 @@ class ListenerStorage {
         this._listeners.push(() => document.getElementById(id).addEventListener('submit', onSubmit));
     }
 
-    storeComponentInit(initComponent){
+    storeComponentInit(initComponent) {
         this._listeners.push(initComponent);
     }
 

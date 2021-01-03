@@ -5,6 +5,8 @@ const DATE_FORMAT_MACHINE = "YYYY-MM-DD";
 const DATE_TIME_FORMAT_HUMAN = "DD. MMMM YYYY HH:mm";
 const DATE_TIME_FORMAT_MACHINE = "YYYY-MM-DDTHH:MM:SS";
 
+const ID_ERROR_CONTAINER = "error-container";
+
 const RAUMRESERVIERUNG = "Raumreservierung";
 const UEBERSICHT = "Übersicht";
 const RAUMINFORMATIONEN = "Rauminformationen"

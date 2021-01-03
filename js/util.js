@@ -17,11 +17,12 @@ class MapUtil {
 
 class DatePicker {
 
-    constructor() {
+    constructor(showTime) {
         this.id = 'datepicker';
         this.separator = ' - ';
         this.start = null;
         this.end = null;
+        this.showTime = showTime;
     }
 
     createInput() {
@@ -36,7 +37,7 @@ class DatePicker {
         return durationInput;
     }
 
-    initDatePicker(onSelect, showTime, startDate, endDate) {
+    initDatePicker(onSelect, startDate, endDate) {
         this.start = startDate;
         this.end = endDate;
         this._getDatePicker().daterangepicker({
@@ -45,12 +46,12 @@ class DatePicker {
             autoUpdateInput: false,
             minYear: 2000,
             maxYear: 2100,
-            timePicker: showTime,
-            timePicker24Hour: showTime,
+            timePicker: this.showTime,
+            timePicker24Hour: this.showTime,
             locale: {
                 cancelLabel: 'Abbrechen',
                 applyLabel: 'Übernehmen',
-                format: showTime ? DATE_TIME_FORMAT_HUMAN : DATE_FORMAT_HUMAN
+                format: this.showTime ? DATE_TIME_FORMAT_HUMAN : DATE_FORMAT_HUMAN
             }
         });
         const that = this;
@@ -65,8 +66,9 @@ class DatePicker {
     setValues(onSelect, startDate, endDate){
         this.start = startDate;
         this.end = endDate;
+        const format = this.showTime ? DATE_TIME_FORMAT_HUMAN : DATE_FORMAT_HUMAN;
+        this._getDatePicker().val(this.start.format(format) + this.separator + this.end.format(format));
         onSelect(this.start, this.end);
-        this._getDatePicker().val(this.start.format(DATE_FORMAT_HUMAN) + this.separator + this.end.format(DATE_FORMAT_HUMAN));
     }
 
     clear(){
@@ -76,9 +78,10 @@ class DatePicker {
     }
 
     getValues(){
+        const format = this.showTime ? DATE_TIME_FORMAT_HUMAN : DATE_FORMAT_HUMAN;
         return {
-            start: moment(this.start, DATE_FORMAT_HUMAN),
-            end: moment(this.end, DATE_FORMAT_HUMAN)
+            start: moment(this.start, format),
+            end: moment(this.end, format)
         }
     }
 
