@@ -1,5 +1,6 @@
 body {
     padding: 12px;
+    font-family: 'DM Sans';
 }
 
 #title, #subtitle, nav, #room-panel {
