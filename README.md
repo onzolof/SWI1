@@ -28,10 +28,6 @@ Rauminformationen, Leaflet-Karte (OpenStreetMap), Buchungsliste mit Datepicker (
 
 **Umsetzung**
 
-![Screenshot Raumdetail mit Karte und Buchungen](docs/screenshots/room-detail.png)
-
-Weitere Ansicht (aus dem Bericht):
-
 ![Screenshot Raumdetail](docs/screenshots/raumuebersicht-screenshot.png)
 
 **Mobile — Buchungsübersicht**
